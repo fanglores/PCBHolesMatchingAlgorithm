@@ -1,2 +1,4 @@
 # PCBHolesMatchingAlgorithm
-initial
+An algorithm that finds matches between the holes in the drawing of the PCB and its photo upon manufacture (after drilling, which will have an error).
+After that, the algorithm "stretches" the image of the original drawing over the photo of the PCB (possible to vice versa). This allows you to get an image with corrected hole positions and visually get an idea of the shifts using the included grid of lines from the original drawing.
+The algorithm normalizes the points of the holes along the upper and left margins, and correlates them between the images. Then, using Delaunay triangulation, a triangular mesh is built along the points. According to the points correspondences, the grid is transferred to another image and using an Affine transformation, each triangle of the old image is transformed into a triangle of the new one.
