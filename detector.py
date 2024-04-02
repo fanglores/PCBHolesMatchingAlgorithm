@@ -1,5 +1,3 @@
-import os.path
-
 from helpers import *
 from visualizators import *
 
