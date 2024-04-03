@@ -14,14 +14,22 @@ This program has five modules: "Main", "Detector", "Resizer", "Helpers", and "Vi
 All the constants are explained below:
      - DEBUG_VISUALIZE_FOUND_CONTOURS (default: False): Visualizes the found contours in the images.
      - DEBUG_VISUALIZE_PAIRS_CONNECTIONS (default: False): Visualizes the mapping of holes between the images.
-     - DEBUG_VISUALISE_MESHES (default: False): Visualises a constructed grid of triangles.
-     - DEBUG_VISUALISED_PAIRED_MASKED_TRIANGLES_STEP_BY_STEP (default: False): Visualizes pairs of triangles from different images step by step.- DEBUG: Visualize result step by step (default: False): Visualizes the result one step at a time.
-     - Debug Visualize Result (the default is false). It is recommended to use the constant below, as it will provide a more representative visualization.
-     - Visualize resulting final result
-     - Debug visualize with mesh (default value: false). Visualize final result with triangular mesh on topSHOULD_SAVE_RESULT: Whether to save the image with final results.
+     - DEBUG_VISUALIZE_MESHES (default: False): Visualises a constructed grid of triangles.
+     - DEBUG_VISUALIZED_PAIRED_MASKED_TRIANGLES_STEP_BY_STEP (default: False): Visualizes pairs of triangles from different images step by step.
+     - DEBUG_VISUALIZE_RESULT_STEP_BY_STEP (default: False): Visualize result step by step.
+     - DEBUG_VISUALIZE_RESULT (default: False). Visualize resulting final result. It is recommended to use together with the constant below, as it will provide a more representative visualization.
+     - DEBUG_VISUALIZE_RESULT_WITH_MESH (default: False): Visualize final result with triangular mesh on top
+     - SHOULD_SAVE_RESULT (default: True): Whether to save the image with final results.
   
 - Helpers.py include functions for basic calculations and image resizing within the detector module.
 - Detector.py includes functions for finding centers of holes in images, aligning coordinates between two images, and normalizing. Centers are found using colored masks and contours that are determined through moments.
 After coordinates are aligned, centers of holes become aligned as well. Normalization involves removing the smallest common x and y coordinates from all points within the center of each image, causing the images to fit snugly to the left and top edges of the images. This makes points in both images appear closer together when they overlap, creating a more accurate representation.A function searches for corresponding points in the second image by calculating the Euclidean distance between each pair of points and finding the closest match between the two images. Due to normalization, there is almost no chance of error in this function.
 - Resizer.py includes functions for image transformations, including the transformation itself, which makes use of a triangular grid creation function and a process that transforms a triangle from the first image into a triangle in the second using the coordinates of corresponding points. Delaunay triangulation is used to create a triangular grid. Then, a mask is applied to each triangle, and it is transformed using an affine transformation, after which it is overlayed on the resulting image. Finally, all the transformed triangles are combined to create the final image, which is saved to a computer.
 - Main.py implements the algorithm itself: searching for the centers, matching of coordinates, and the transformation of images.
+
+### Example
+We have two images. First is a drawing of a PCB with tracks imported from software. It has blue holes. Also we have our manufactured PCB, on which we found holes and marked them with red color.  
+<img src="samples/photo_1.jpg" width="500" height="370" style="display:inline-block;"> <img src="samples/photo_2.jpg" width="500" height="370" style="display:inline-block;">
+  
+After the program execution we get drawing image stretched to the real image by the points of holes.  
+<img src="samples/output.jpeg" width="1000" height="720">
